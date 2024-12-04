@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Arcane Manager</title>
+    <link rel="stylesheet" href="frontend\css\global.css" />
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  </head>
+  <body>
+    <header>
+      <h1>Arcane Manager</h1>
+      <nav>
+        <ul>
+          <li><a href="#" data-section="cidades">Registrar senha</a></li>
+          <li><a href="#" data-section="aeroportos">Ver minhas senhas</a></li>
+          <li><a href="#" data-section="aeronaves">Editar senhas</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <section id="cidades">
+        <h2>Registro de senhas</h2>
+        <form id="aeronaveForm">
+          <h3>Adicionar senha</h3>
+          <input type="text" id="descricao" placeholder="Descrição" />
+          <select name="select">
+            <option value="valor0" selected>--selecione--</option>
+            <option value="valor1">Sociais</option>
+            <option value="valor2">Finanças</option>
+            <option value="valor3">Aplicativos</option>
+            <option value="valor4">Jogos</option>
+            <option value="valor5">Outros</option>
+          </select>
+          <input type="text" id="login" placeholder="Login" required />
+          <input type="password" id="senha" placeholder="Senha" required />
+          <input type="hidden" id="aeronaveId" />
+          <button type="submit">Salvar</button>
+        </form>
+
+        <table id="cidadesTable">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Descrição</th>
+              <th>Categoria</th>
+              <th>Login</th>
+              <th>Senha</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- As cidades serão inseridas aqui -->
+          </tbody>
+        </table>
+
+        <script type="module" src="../js/api-cidade.js"></script>
+        <script type="module" src="../js/script-cidade.js"></script>
+      </section>
+
+      <section id="aeroportos">
+        <section id="aeroportos">
+          <h2>Visualição de senhas</h2>
+          <table id="aeroportosTable">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Descrição</th>
+                <th>Categoria</th>
+                <th>Login</th>
+                <th>Senha</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Os aeroportos serão inseridos aqui -->
+            </tbody>
+          </table>
+
+          <script type="module" src="../js/api-aeroporto.js"></script>
+          <script type="module" src="../js/script-aeroporto.js"></script>
+        </section>
+      </section>
+
+      <section id="aeronaves">
+        <h2>Alterar senhas</h2>
+        <table id="aeronavesTable">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Descrição</th>
+              <th>Categoria</th>
+              <th>Login</th>
+              <th>Senha</th>
+              <th>Alterar</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- As aeronaves serão inseridas aqui -->
+          </tbody>
+        </table>
+
+        <script type="module" src="../js/api-aeronave.js"></script>
+        <script type="module" src="../js/script-aeronave.js"></script>
+      </section>
+    </main>
+
+    <script src="frontend\js\script-admin.js"></script>
+  </body>
+</html>
