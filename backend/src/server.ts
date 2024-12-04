@@ -1,27 +1,52 @@
 import Fastify from 'fastify';
 import { PrismaClient } from '@prisma/client';
+import CryptoJS from 'crypto-js';
+import fastifyCors from '@fastify/cors';
 
 const fastify = Fastify({ logger: true });
 const prisma = new PrismaClient();
 
-// CRUD Routes for Passwords
+// Configurar o CORS para liberar todas as origens
+fastify.register(fastifyCors, {
+  origin: '*', // Permitir qualquer origem
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Métodos permitidos
+});
+
+const SECRET_KEY = 'my_secret_key';
+
+const encryptPassword = (password: string): string => {
+  return CryptoJS.AES.encrypt(password, SECRET_KEY).toString();
+};
+
+const decryptPassword = (encryptedPassword: string): string => {
+  const bytes = CryptoJS.AES.decrypt(encryptedPassword, SECRET_KEY);
+  return bytes.toString(CryptoJS.enc.Utf8);
+};
+
 fastify.get('/passwords', async (_, reply) => {
   const passwords = await prisma.password.findMany();
-  return reply.send(passwords);
+  const decryptedPasswords = passwords.map((password) => ({
+    ...password,
+    password: decryptPassword(password.password),
+  }));
+  return reply.send(decryptedPasswords);
 });
 
 fastify.get('/passwords/:id', async (request, reply) => {
   const { id } = request.params as { id: string };
 
   const password = await prisma.password.findUnique({
-    where: { id: parseInt(id, 10) },
+    where: { id: Number.parseInt(id, 10) },
   });
 
   if (!password) {
     return reply.status(404).send({ message: 'Password not found' });
   }
-
-  return reply.send(password);
+  const decryptedPassword = {
+    ...password,
+    password: decryptPassword(password.password),
+  };
+  return reply.send(decryptedPassword);
 });
 
 fastify.post('/passwords', async (request, reply) => {
@@ -32,8 +57,10 @@ fastify.post('/passwords', async (request, reply) => {
     password: string;
   };
 
+  const encryptedPassword = encryptPassword(password);
+
   const newPassword = await prisma.password.create({
-    data: { description, category, login, password },
+    data: { description, category, login, password: encryptedPassword },
   });
 
   return reply.status(201).send(newPassword);
@@ -49,9 +76,11 @@ fastify.put('/passwords/:id', async (request, reply) => {
   };
 
   try {
+    const encryptedPassword = encryptPassword(password);
+
     const updatedPassword = await prisma.password.update({
-      where: { id: parseInt(id, 10) },
-      data: { description, category, login, password },
+      where: { id: Number.parseInt(id, 10) },
+      data: { description, category, login, password: encryptedPassword },
     });
 
     return reply.send(updatedPassword);
@@ -65,7 +94,7 @@ fastify.delete('/passwords/:id', async (request, reply) => {
 
   try {
     await prisma.password.delete({
-      where: { id: parseInt(id, 10) },
+      where: { id: Number.parseInt(id, 10) },
     });
 
     return reply.status(204).send();
@@ -74,7 +103,6 @@ fastify.delete('/passwords/:id', async (request, reply) => {
   }
 });
 
-// Start Server
 const start = async () => {
   try {
     await fastify.listen({ port: 3000 });

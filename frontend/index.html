@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Arcane Manager</title>
+    <link rel="stylesheet" href="css/global.css" />
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  </head>
+  <body>
+    <header>
+      <h1>Arcane Manager</h1>
+      <nav>
+        <ul>
+          <li><a href="#" data-section="register">Registrar Senha</a></li>
+          <li><a href="#" data-section="list">Ver Minhas Senhas</a></li>
+          <li><a href="#" data-section="edit">Editar Senhas</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <!-- Registro de Senhas -->
+      <section id="register" class="section">
+        <h2>Registro de Senhas</h2>
+        <form id="passwordForm">
+          <h3>Adicionar Senha</h3>
+          <input type="text" id="description" placeholder="Descrição" required />
+          <select id="category" required>
+            <option value="" selected>--Selecione--</option>
+            <option value="Social">Sociais</option>
+            <option value="Finance">Finanças</option>
+            <option value="Apps">Aplicativos</option>
+            <option value="Games">Jogos</option>
+            <option value="Others">Outros</option>
+          </select>
+          <input type="text" id="login" placeholder="Login" required />
+          <input type="password" id="password" placeholder="Senha" required />
+          <button type="submit">Salvar</button>
+        </form>
+      </section>
+
+      <!-- Listar Senhas -->
+      <section id="list" class="section hidden">
+        <h2>Visualização de Senhas</h2>
+        <table id="listTable">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Descrição</th>
+              <th>Categoria</th>
+              <th>Login</th>
+              <th>Senha</th>
+              <th>Excluir</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </section>
+
+      <!-- Editar Senhas -->
+      <section id="edit" class="section hidden">
+        <h2>Alterar Senhas</h2>
+        <form id="editForm">
+          <h3>Editar Senha</h3>
+          <input type="hidden" id="editId" />
+          <input type="text" id="editDescription" placeholder="Descrição" required />
+          <select id="editCategory" required>
+            <option value="" selected>--Selecione--</option>
+            <option value="Social">Sociais</option>
+            <option value="Finance">Finanças</option>
+            <option value="Apps">Aplicativos</option>
+            <option value="Games">Jogos</option>
+            <option value="Others">Outros</option>
+          </select>
+          <input type="text" id="editLogin" placeholder="Login" required />
+          <input type="password" id="editPassword" placeholder="Senha" required />
+          <button type="submit">Salvar Alterações</button>
+        </form>
+
+        <table id="editTable">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Descrição</th>
+              <th>Categoria</th>
+              <th>Login</th>
+              <th>Senha</th>
+              <th>Editar</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </section>
+
+    </main>
+
+    <script src="js/script-admin.js"></script>
+  </body>
+</html>
